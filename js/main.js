@@ -8,10 +8,12 @@ function getRandomIntInclusive(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 getRandomIntInclusive(0, 100);
 
 // Функция для проверки максимальной длины строки.
 function checkLength(string, maxlength) {
   return string.length < maxlength;
 }
+
 checkLength('new string', 4);
