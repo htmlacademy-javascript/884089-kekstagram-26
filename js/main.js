@@ -39,45 +39,33 @@ const AUTHORS = [
 ];
 
 // Ф-я получения индекса элемента:
-function getRandom (elements) {
-  return elements[getRandomIntInclusive(0, elements.length - 1)];
+function getRandom (elementIndex) {
+  return elementIndex[getRandomIntInclusive(0, elementIndex.length - 1)];
+}
+
+// Ф-я создания массива-объекта коментариев:
+function getComments () {
+  // eslint-disable-next-line prefer-const
+  let comment = [];
+  for(let j = 1; j < getRandomIntInclusive(1, 6); j++) {
+    comment.push({id: j, avatar: `img/avatar-${ j }.svg`, message: getRandom(MESAGGES), name: getRandom(AUTHORS),});
+  }
+  return comment;
 }
 
 // Ф-я создания объекта фотокарточки
-function createCard() {
+function createCard(i) {
   return {
-    id: getRandomIntInclusive(1, 25),
-    url: `photos/${  getRandomIntInclusive(1, 25)  }.jpg`,
+    id: i,
+    url: `photos/${  i  }.jpg`,
     description: 'Какое то фото..',
     likes: getRandomIntInclusive(15, 200),
-    comments: [
-      {
-        id:getRandomIntInclusive(1, 100),
-        avatar: `img/avatar-${ getRandomIntInclusive(1, 6) }.svg`,
-        message: getRandom(MESAGGES),
-        name: getRandom(AUTHORS),
-      },
-      {
-        id:getRandomIntInclusive(1, 100),
-        avatar: `img/avatar-${ getRandomIntInclusive(1, 6) }.svg`,
-        message: getRandom(MESAGGES),
-        name: getRandom(AUTHORS),
-      },
-      {
-        id:getRandomIntInclusive(1, 100),
-        avatar: `img/avatar-${ getRandomIntInclusive(1, 6) }.svg`,
-        message: getRandom(MESAGGES),
-        name: getRandom(AUTHORS),
-      },
-      {
-        id:getRandomIntInclusive(1, 100),
-        avatar: `img/avatar-${ getRandomIntInclusive(1, 6) }.svg`,
-        message: getRandom(MESAGGES),
-        name: getRandom(AUTHORS),
-      },
-    ],
+    comments: getComments(),
   };
 }
-
-// eslint-disable-next-line no-unused-vars
-const listElemets = Array.from({length: COUNT_FOTO_CARDS}, createCard);
+// Создания массива из 25 объектов фотокарточки:
+// eslint-disable-next-line prefer-const
+let elements = [];
+for(let i = 1; i <= COUNT_FOTO_CARDS; i++){
+  elements.push(createCard(i));
+}
