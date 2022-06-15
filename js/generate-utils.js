@@ -3,8 +3,7 @@ import {COUNT_FOTO_CARDS, MESAGGES, AUTHORS} from './data.js';
 
 // Ф-я создания массива-объекта коментариев:
 function getComments () {
-  // eslint-disable-next-line prefer-const
-  let comment = [];
+  const comment = [];
   for(let j = 1; j < getRandomIntInclusive(1, 6); j++) {
     comment.push({id: j, avatar: `img/avatar-${ j }.svg`, message: getRandom(MESAGGES), name: getRandom(AUTHORS),});
   }
@@ -22,8 +21,7 @@ function createCard(i) {
   };
 }
 // Создания массива из 25 объектов фотокарточки:
-// eslint-disable-next-line prefer-const
-let photoElements = [];
+const photoElements = [];
 for(let i = 1; i <= COUNT_FOTO_CARDS; i++){
   photoElements.push(createCard(i));
 }
