@@ -1,2 +1,3 @@
-import {photoElements} from './generate-utils.js';
-window.console.log(photoElements);
+import {mocks} from './mock-data.js';
+window.console.log(mocks());
+
