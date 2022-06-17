@@ -45,6 +45,7 @@ function createCard(i) {
     comments: getComments(),
   };
 }
+
 // Создания массива из 25 объектов фотокарточки:
 const mocks = function getMockPhotos(){
   const photoElements = [];
