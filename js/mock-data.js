@@ -24,7 +24,7 @@ const AUTHORS = [
 // Ф-я создания массива-объекта коментариев:
 function getComments () {
   const comment = [];
-  for(let j = 1; j < getRandomIntInclusive(1, 6); j++) {
+  for(let j = 1; j < getRandomIntInclusive(0, 6); j++) {
     comment.push({
       id: j,
       avatar: `img/avatar-${ j }.svg`,
