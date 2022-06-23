@@ -15,7 +15,7 @@ const bigPictureCommentsList = bigPicture.querySelector('.social__comments');
 
 
 // Функция, заполняющая шаблон фотокарточки данными:
-export function getPictureCardTemplate(cardData) {
+function getPictureCardTemplate(cardData) {
   const pictureCard = pictureTemplate.cloneNode(true);
   pictureCard.querySelector('.picture__img').src = cardData['url'];
   pictureCard.querySelector('.picture__likes').textContent = cardData['likes'];
@@ -44,10 +44,10 @@ const createElem = function(comments){
 
 // Функция, отрисовывающая фотокарточки на страницу:
 
-export function renderPictureCards(mocksArr, fnFillTemplate) {
+export function renderPictureCards(mocksArr) {
   const fotoValue = mocksArr();
   for(let j = 0; j < fotoValue.length; j++){
-    const pictureDate = fnFillTemplate(fotoValue[j]);
+    const pictureDate = getPictureCardTemplate(fotoValue[j]);
     // console.log(fotoValue[j]);
     // Обработчики на открытие большого фото по клику:
     pictureDate.addEventListener('click', ()=> {
