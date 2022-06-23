@@ -1,3 +1,4 @@
+// Константы найденых элеметов разметки шndex.html:
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -21,6 +22,8 @@ export function getPictureCardTemplate(cardData) {
   pictureCard.querySelector('.picture__comments').textContent = cardData.comments.length;
   return pictureCard;
 }
+
+// Функция, создания масива разметки заполненой данными:
 const createElem = function(comments){
   const items = [];
   for(let k = 0;k < comments.length; k++){
@@ -46,7 +49,7 @@ export function renderPictureCards(mocksArr, fnFillTemplate) {
   for(let j = 0; j < fotoValue.length; j++){
     const pictureDate = fnFillTemplate(fotoValue[j]);
     // console.log(fotoValue[j]);
-    // Обработчики на открытие большого фото:
+    // Обработчики на открытие большого фото по клику:
     pictureDate.addEventListener('click', ()=> {
       document.querySelector('body').classList.toggle('modal-open');
       bigPicture.classList.toggle('hidden');
@@ -66,15 +69,15 @@ export function renderPictureCards(mocksArr, fnFillTemplate) {
         bigPictureCommentsList.append(temp[i]);
         // console.log(temp[i]);
       }
-
-      document.addEventListener('keydown', (evt)=> {
-        if(evt.keyCode===27){
-          document.querySelector('body').classList.toggle('modal-open');
-          bigPicture.classList.toggle('hidden');
-          bigPictureCommentCount.classList.toggle('hidden');
-          bigPictureCommentsLoader.classList.toggle('hidden');
-        }
-      });
+    });
+    // Обработчики на закрытие большого фото по нажатию Esc:
+    pictureDate.addEventListener('keydown', (evt)=> {
+      if(evt.keyCode === 27){
+        document.querySelector('.big-picture').classList.add('hidden');
+        document.querySelector('body').classList.remove('modal-open');
+        bigPictureCommentCount.classList.remove('hidden');
+        bigPictureCommentsLoader.classList.remove('hidden');
+      }
     });
     pictures.append(pictureDate);
 
@@ -83,7 +86,7 @@ export function renderPictureCards(mocksArr, fnFillTemplate) {
   return pictures;
 }
 
-// Обработчики на закрытие большого фото:
+// Обработчики на закрытие большого фото по клику на крестик:
 bigPictureClose.addEventListener('click', ()=> {
   document.querySelector('body').classList.toggle('modal-open');
   bigPicture.classList.toggle('hidden');
