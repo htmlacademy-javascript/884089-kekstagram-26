@@ -38,7 +38,7 @@ function getPictureCardTemplate(cardData) {
 //   return item;
 // }
 // 2 вариант(еле сделал)
-function createElementComment ({avatar, name, message}){//Как сделать через значения ?
+function createElementComment ({avatar, name, message}){
   const item = `<li class="social__comment">
     <img
     class="social__picture"
@@ -51,7 +51,7 @@ function createElementComment ({avatar, name, message}){//Как сделать 
   return item;
 }
 
-
+// Ф-я отрисовки маленьких карточек:
 export function renderPictures(mocksArr){
   for(let j = 0; j < mocksArr.length; j++){
     const pictureData = getPictureCardTemplate(mocksArr[j]);
@@ -59,7 +59,7 @@ export function renderPictures(mocksArr){
   }
   return pictures;
 }
-
+// Ф-я отрисовки большой картинки:
 function showBigPicture(data) {
   document.querySelector('body').classList.toggle('modal-open');
   bigPicture.classList.toggle('hidden');
@@ -72,13 +72,13 @@ function showBigPicture(data) {
   bigPictureCommentsCount.textContent = data.comments.length;
 
   // console.log(data.comments);
+  // Цикл отрисовки списка комментариев:
   for(let i = 0; i < data.comments.length; i++){
     // для первого варианта:
     // const temp = createElementComment(data.comments[i]);
     // для второго варианта:
     const {avatar, name, message} = data.comments[i];
     const temp = createElementComment({avatar, name, message});
-    // console.log(data.comments[i]);
     // console.log(temp);
     bigPictureCommentsList.insertAdjacentHTML('afterbegin', temp);
     // Почему не работает так ?
@@ -86,7 +86,7 @@ function showBigPicture(data) {
     // bigPictureCommentsList.textContent(temp);
   }
 }
-
+// Ф-я открытия большого изображения по клику на соотвествующее превью:
 function onPicturesClick(evt){
   // console.log(evt.target.parentElement);
   const currentPicture = evt.target.parentElement;
@@ -98,19 +98,22 @@ function onPicturesClick(evt){
 
 pictures.addEventListener('click', onPicturesClick);
 
-// Обработчики на закрытие большого фото по клику на крестик:
-bigPictureClose.addEventListener('click', ()=> {
+// Ф-я на закрытие большого фото по клику на крестик:
+function onCloseClick(){
   document.querySelector('body').classList.toggle('modal-open');
   bigPicture.classList.toggle('hidden');
   bigPictureCommentCount.classList.toggle('hidden');
   bigPictureCommentsLoader.classList.toggle('hidden');
-});
-
-pictures.addEventListener('keydown', (evt)=> {
+}
+// Ф-я на закрытие большого фото по клавише ESC:
+function onPicturesKeydown(evt) {
   if(evt.keyCode === 27){
     document.querySelector('.big-picture').classList.add('hidden');
     document.querySelector('body').classList.remove('modal-open');
     bigPictureCommentCount.classList.remove('hidden');
     bigPictureCommentsLoader.classList.remove('hidden');
   }
-});
+}
+
+pictures.addEventListener('keydown', onPicturesKeydown);
+bigPictureClose.addEventListener('click', onCloseClick);
