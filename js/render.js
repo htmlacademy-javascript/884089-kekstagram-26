@@ -25,15 +25,28 @@ function getPictureCardTemplate(cardData) {
   return pictureCard;
 }
 
-// Функция, создания масива разметки заполненой данными:
-function createElementComment (comments){
+// Функция, создания элемента разметки через шаблонную строку заполненого данными:
+// 1 вариант function createElementComment (comments){
+//   const item = `<li class="social__comment">
+//     <img
+//     class="social__picture"
+//     src="${comments.avatar}"
+//     alt="${comments.name}"
+//     width="35" height="35">
+//     <p class="social__text">${comments.message}</p>
+//   </li>`;
+//   return item;
+// }
+// 2 вариант(еле сделал)
+function createElementComment ({avatar, name, message}){//Как сделать через значения ?
   const item = `<li class="social__comment">
     <img
     class="social__picture"
-    src="${comments.avatar}"
-    alt="${comments.name}"
+    src="${avatar}"
+    src="${avatar}"
+    alt="${name}"
     width="35" height="35">
-    <p class="social__text">${comments.message}</p>
+    <p class="social__text">${message}</p>
   </li>`;
   return item;
 }
@@ -60,9 +73,17 @@ function showBigPicture(data) {
 
   // console.log(data.comments);
   for(let i = 0; i < data.comments.length; i++){
-    const temp = createElementComment(data.comments[i]);
+    // для первого варианта:
+    // const temp = createElementComment(data.comments[i]);
+    // для второго варианта:
+    const {avatar, name, message} = data.comments[i];
+    const temp = createElementComment({avatar, name, message});
+    // console.log(data.comments[i]);
     // console.log(temp);
     bigPictureCommentsList.insertAdjacentHTML('afterbegin', temp);
+    // Почему не работает так ?
+    // bigPictureCommentsList.appendChild(temp);
+    // bigPictureCommentsList.textContent(temp);
   }
 }
 
