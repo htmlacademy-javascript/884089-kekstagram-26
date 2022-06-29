@@ -53,5 +53,5 @@ const mocks = function getMockPhotos(){
     photoElements.push(createCard(i));
   }
   return photoElements;
-};
+}();
 export {mocks};
