@@ -69,8 +69,10 @@ function showBigPicture(data) {
 // Ф-я открытия большого изображения по клику на соотвествующее превью:
 function onPicturesClick(evt){
   const currentPicture = evt.target.parentElement;
-  const pictureData = mocks.find((el)=>+currentPicture.id === +el.id);
-  showBigPicture(pictureData);
+  if(currentPicture.classList.contains('picture')){
+    const pictureData = mocks.find((el)=>+currentPicture.id === +el.id);
+    showBigPicture(pictureData);
+  }
 }
 
 pictures.addEventListener('click', onPicturesClick);
