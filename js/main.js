@@ -1,3 +1,5 @@
+import './user-form.js';
+import './render.js';
 import { mocks } from './mock-data.js';
 import {renderPictures} from './render.js';
 renderPictures(mocks);
