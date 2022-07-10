@@ -3,7 +3,7 @@ import {mocks} from './mock-data.js';
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
-const bigPictureCommentCount = bigPicture.querySelector('.social__comment-count');
+// const bigPictureCommentCount = bigPicture.querySelector('.social__comment-count');
 const bigPictureClose = document.querySelector('.big-picture__cancel');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -37,6 +37,19 @@ function createElementComment ({avatar, name, message}){
   </li>`;
   return item;
 }
+// Ф-я создания cкрытого комментария и его заполнения данными:
+function createHiddenElementComment ({avatar, name, message}){
+  const item = `<li class="social__comment hidden">
+    <img
+    class="social__picture"
+    src="${avatar}"
+    src="${avatar}"
+    alt="${name}"
+    width="35" height="35">
+    <p class="social__text">${message}</p>
+  </li>`;
+  return item;
+}
 
 // Ф-я отрисовки маленьких карточек:
 export function renderPictures(mocksArr){
@@ -50,8 +63,8 @@ export function renderPictures(mocksArr){
 function showBigPicture(data) {
   document.querySelector('body').classList.toggle('modal-open');
   bigPicture.classList.toggle('hidden');
-  bigPictureCommentCount.classList.toggle('hidden');
-  bigPictureCommentsLoader.classList.toggle('hidden');
+  // bigPictureCommentCount.classList.toggle('hidden');
+  // bigPictureCommentsLoader.classList.toggle('hidden');
   bigPictureCommentsList.textContent = '';
   bigPictureImg.src =  data.url;
   bigPictureLikes.textContent = data.likes;
@@ -61,11 +74,17 @@ function showBigPicture(data) {
   // Цикл отрисовки списка комментариев:
   for(let i = 0; i < data.comments.length; i++){
     const {avatar, name, message} = data.comments[i];
-    const newComment = createElementComment({avatar, name, message});
-    bigPictureCommentsList.insertAdjacentHTML('afterbegin', newComment);
+    if( i <= 4 ){
+      const newComment = createElementComment({avatar, name, message});
+      bigPictureCommentsList.insertAdjacentHTML('afterbegin', newComment);
+    } else {
+      const newHiddenComment = createHiddenElementComment({avatar, name, message});
+      bigPictureCommentsList.insertAdjacentHTML('beforeend', newHiddenComment);
+    }
   }
   bigPictureClose.addEventListener('click', onCloseClick);
 }
+
 // Ф-я открытия большого изображения по клику на соотвествующее превью:
 function onPicturesClick(evt){
   const currentPicture = evt.target.parentElement;
@@ -81,8 +100,8 @@ pictures.addEventListener('click', onPicturesClick);
 function hiddenBigPicture(){
   document.querySelector('.big-picture').classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
-  bigPictureCommentCount.classList.remove('hidden');
-  bigPictureCommentsLoader.classList.remove('hidden');
+  // bigPictureCommentCount.classList.remove('hidden');
+  // bigPictureCommentsLoader.classList.remove('hidden');
 }
 
 function onCloseClick(){
@@ -96,3 +115,12 @@ function onPicturesKeydown(evt) {
   }
 }
 pictures.addEventListener('keydown', onPicturesKeydown);
+
+// Ф-я на показ дополнительных комментариев:
+function onCommentsLoader(){
+  const tempComments = bigPictureCommentsList.querySelectorAll('.social__comment');
+  for(let i = 0; i < tempComments.length; i++){
+    tempComments[i].classList.remove('hidden');
+  }
+}
+bigPictureCommentsLoader.addEventListener('click',onCommentsLoader);

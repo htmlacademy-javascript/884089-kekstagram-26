@@ -58,6 +58,7 @@ pristine.addValidator(
   true
 );
 
+
 const hashtagValidator = (value)=> {
   const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
   if(!value.length){
