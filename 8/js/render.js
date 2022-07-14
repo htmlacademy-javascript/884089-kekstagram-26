@@ -115,6 +115,7 @@ pictures.addEventListener('click', onPicturesClick);
 function hiddenBigPicture(){
   document.querySelector('.big-picture').classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
+  bigPictureCommentsLoader.classList.remove('hidden');
 }
 
 function onCloseClick(){
