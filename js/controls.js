@@ -1,40 +1,78 @@
 const groupScales = document.querySelector('.img-upload__scale');
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+const inputEffectLevelValue = imgUploadEffectLevel.querySelector('.effect-level__value');
+const sliderEffectLevel = imgUploadEffectLevel.querySelector('.effect-level__slider');
 const inputScale = groupScales.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
+const effectList = document.querySelector('.effects__list');
 const MAX_STEP = 25;
 let counterValue = 100;
-const effectList = document.querySelector('.effects__list');
+
+
+noUiSlider.create(sliderEffectLevel, {
+  start: [100],
+  step: 1,
+  range: {
+    'min': [0],
+    'max': [100]
+  }
+});
+
+// Ф-я работы слайдера интенсивности фильтров:
+sliderEffectLevel.noUiSlider.on('update', (values, handle)=> {
+  inputEffectLevelValue.value = values[handle];
+  for(const effectItem of effectList.children) {
+
+    if(effectItem.querySelector(':checked') && effectItem.querySelector(':checked').value === 'chrome'){
+      imgUploadPreview.style.filter = `grayscale(${inputEffectLevelValue.value / 100})`;
+    }
+    if(effectItem.querySelector(':checked') && effectItem.querySelector(':checked').value === 'sepia'){
+      imgUploadPreview.style.filter = `sepia(${inputEffectLevelValue.value / 100})`;
+    }
+    if(effectItem.querySelector(':checked') && effectItem.querySelector(':checked').value === 'marvin'){
+      imgUploadPreview.style.filter = `invert(${inputEffectLevelValue.value}%)`;
+    }
+    if(effectItem.querySelector(':checked') && effectItem.querySelector(':checked').value === 'phobos'){
+      imgUploadPreview.style.filter = `blur(${(inputEffectLevelValue.value / 100) * 3}px)`;
+    }
+    if(effectItem.querySelector(':checked') && effectItem.querySelector(':checked').value === 'heat'){
+      imgUploadPreview.style.filter = `brightness(${inputEffectLevelValue.value / 100})`;
+    }
+  }
+});
 
 
 // Ф-я наложения фильтров на изображение:
 function onChangeFilter(evt){
   const target = evt.target;
+  imgUploadPreview.removeAttribute('style');
+  imgUploadPreview.style.transform = `scale(${counterValue / 100})`;
+  sliderEffectLevel.noUiSlider.set(100);
   if(target.id === 'effect-none'){
-    imgUploadPreview.querySelector('img').removeAttribute('class');
+    imgUploadPreview.removeAttribute('class');
     imgUploadEffectLevel.classList.add('hidden');
   } else {
     imgUploadEffectLevel.classList.remove('hidden');
   }
   if(target.id === 'effect-chrome'){
-    imgUploadPreview.querySelector('img').removeAttribute('class');
-    imgUploadPreview.querySelector('img').classList.add('effects__preview--chrome');
+    imgUploadPreview.removeAttribute('class');
+    imgUploadPreview.classList.add('effects__preview--chrome');
   }
   if(target.id === 'effect-sepia'){
-    imgUploadPreview.querySelector('img').removeAttribute('class');
-    imgUploadPreview.querySelector('img').classList.add('effects__preview--sepia');
+    imgUploadPreview.removeAttribute('class');
+    imgUploadPreview.classList.add('effects__preview--sepia');
   }
   if(target.id === 'effect-marvin'){
-    imgUploadPreview.querySelector('img').removeAttribute('class');
-    imgUploadPreview.querySelector('img').classList.add('effects__preview--marvin');
+    imgUploadPreview.removeAttribute('class');
+    imgUploadPreview.classList.add('effects__preview--marvin');
   }
   if(target.id === 'effect-phobos'){
-    imgUploadPreview.querySelector('img').removeAttribute('class');
-    imgUploadPreview.querySelector('img').classList.add('effects__preview--phobos');
+    imgUploadPreview.removeAttribute('class');
+    imgUploadPreview.classList.add('effects__preview--phobos');
   }
   if(target.id === 'effect-heat'){
-    imgUploadPreview.querySelector('img').removeAttribute('class');
-    imgUploadPreview.querySelector('img').classList.add('effects__preview--heat');
+    imgUploadPreview.removeAttribute('class');
+    imgUploadPreview.classList.add('effects__preview--heat');
   }
 }
 
@@ -53,7 +91,7 @@ function onChangeScale(evt){
     inputScale.value = `${counterValue + MAX_STEP  }%`;
     counterValue = counterValue + MAX_STEP;
   }
-  imgUploadPreview.querySelector('img').style.transform = `scale(${counterValue / 100})`;
+  imgUploadPreview.style.transform = `scale(${counterValue / 100})`;
 }
 
 groupScales.addEventListener('click', onChangeScale);
