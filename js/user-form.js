@@ -95,6 +95,8 @@ closeEditFormImg.addEventListener('click', onEditCloseClick);
 // Ф-я открытия формы редактирования изображения:
 fieldUpload.addEventListener('change', ()=>{
   editFormImg.classList.remove('hidden');
+  imgUploadPreview.querySelector('img').removeAttribute('style');
+  imgUploadPreview.querySelector('img').removeAttribute('class');
   document.querySelector('body').classList.add('modal-open');
   closeEditFormImg.addEventListener('click', onEditCloseClick);
   document.addEventListener('keydown', onEditFormImgKeydown);
