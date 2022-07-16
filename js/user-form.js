@@ -5,6 +5,7 @@ const closeEditFormImg = form.querySelector('#upload-cancel');
 const imgUploadPreview = form.querySelector('.img-upload__preview');
 const fieldHashtag = form.querySelector('.text__hashtags');
 const fieldDescription = form.querySelector('.text__description');
+const sliderEffectLevel = document.querySelector('.effect-level__slider');
 
 const pristine = new Pristine(form,{
   classTo:'img-upload__field-wrapper',
@@ -37,6 +38,9 @@ pristine.addValidator(
 );
 
 const isNoRepeats = (value)=>{
+  if(value === '') {
+    return true;
+  }
   value.trim().toLowerCase().split(' ').every((element, index, arr) => arr.indexOf(element) === index);
 };
 
@@ -79,6 +83,9 @@ pristine.addValidator(
 function closeEditForm(){
   editFormImg.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
+  imgUploadPreview.querySelector('img').removeAttribute('style');
+  imgUploadPreview.querySelector('img').removeAttribute('class');
+  sliderEffectLevel.noUiSlider.set(100);
   imgUploadPreview.querySelector('img').value = '';
 }
 

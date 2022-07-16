@@ -40,19 +40,6 @@ function createElementComment ({avatar, name, message}){
   </li>`;
   return item;
 }
-// Ф-я создания cкрытого комментария и его заполнения данными:
-// function createHiddenElementComment ({avatar, name, message}){
-//   const item = `<li class="social__comment hidden">
-//     <img
-//     class="social__picture"
-//     src="${avatar}"
-//     src="${avatar}"
-//     alt="${name}"
-//     width="35" height="35">
-//     <p class="social__text">${message}</p>
-//   </li>`;
-//   return item;
-// }
 
 // Ф-я отрисовки маленьких карточек:
 export function renderPictures(mocksArr){
@@ -77,6 +64,12 @@ function showBigPicture(data) {
   bigPictureLikes.textContent = data.likes;
   bigPictureDescription.textContent = data.description;
   bigPictureCommentsCount.textContent = data.comments.length;
+  if(data.comments.length > COMMENTS_PER_PAGE){
+    bigPictureCurrentCommentsCount.textContent = COMMENTS_PER_PAGE;
+  } else {
+    bigPictureCurrentCommentsCount.textContent = data.comments.length;
+    bigPictureCommentsLoader.classList.add('hidden');
+  }
 
   // Цикл отрисовки первых 5-ти комментариев списка:
   for(let i = 0; i < COMMENTS_PER_PAGE; i++){
@@ -128,6 +121,6 @@ function onPicturesKeydown(evt) {
     hiddenBigPicture();
   }
 }
-pictures.addEventListener('keydown', onPicturesKeydown);
+document.body.addEventListener('keydown', onPicturesKeydown);
 
 
