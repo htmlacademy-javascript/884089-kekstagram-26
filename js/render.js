@@ -1,4 +1,5 @@
-import {mocks} from './mock-data.js';
+// import {mocks} from './mock-data.js';
+
 // Константы найденых элеметов разметки index.html:
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
@@ -45,6 +46,12 @@ function createElementComment ({avatar, name, message}){
 export function renderPictures(mocksArr){
   for(let j = 0; j < mocksArr.length; j++){
     const pictureData = getPictureCardTemplate(mocksArr[j]);
+    // Ф-я открытия большого изображения по клику на соотвествующее превью:
+    const onPicturesClick = (evt) => {
+      evt.preventDefault();
+      showBigPicture(mocksArr[j]);
+    };
+    pictureData.addEventListener('click', onPicturesClick);
     pictures.append(pictureData);
   }
   return pictures;
@@ -92,17 +99,17 @@ function showBigPicture(data) {
   bigPictureClose.addEventListener('click', onCloseClick);
   bigPictureCommentsLoader.addEventListener('click',onCommentsLoader);
 }
+// ОНО не работает!!!
+// // Ф-я открытия большого изображения по клику на соотвествующее превью:
+// function onPicturesClick(evt){
+//   const currentPicture = evt.target.parentElement;
+//   if(currentPicture.classList.contains('picture')){
+//     const pictureData = mocksArr.find((el)=>+currentPicture.id === +el.id);
+//     showBigPicture(currentPicture);
+//   }
+// }
 
-// Ф-я открытия большого изображения по клику на соотвествующее превью:
-function onPicturesClick(evt){
-  const currentPicture = evt.target.parentElement;
-  if(currentPicture.classList.contains('picture')){
-    const pictureData = mocks.find((el)=>+currentPicture.id === +el.id);
-    showBigPicture(pictureData);
-  }
-}
-
-pictures.addEventListener('click', onPicturesClick);
+// pictures.addEventListener('click', onPicturesClick);
 
 // Ф-я на закрытие большого фото:
 function hiddenBigPicture(){
