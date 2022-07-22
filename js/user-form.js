@@ -6,6 +6,7 @@ const imgUploadPreview = form.querySelector('.img-upload__preview');
 const fieldHashtag = form.querySelector('.text__hashtags');
 const fieldDescription = form.querySelector('.text__description');
 const sliderEffectLevel = document.querySelector('.effect-level__slider');
+const buttonSubmit = document.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form,{
   classTo:'img-upload__field-wrapper',
@@ -13,15 +14,23 @@ const pristine = new Pristine(form,{
   errorTextClass:'text__error'
 });
 
-const onFormSubmit = (evt)=>{
-  evt.preventDefault();
-  if(pristine.validate()){
-    form.submit();
-  }
+export const setUserFormSubmit = (onSuccess)=>{
+  form.addEventListener('submit', (evt)=>{
+    evt.preventDefault();
+    if(pristine.validate()){
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://26.javascript.pages.academy/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      ).then(()=>{onSuccess();});
+      buttonSubmit.disabled = true;
+    // form.submit();
+    }
+  });
 };
-
-form.addEventListener('submit', onFormSubmit);
-
 
 const textLengthComments = (value) => {
   if( value.length <= 140 || !value.length){
@@ -80,12 +89,13 @@ pristine.addValidator(
 );
 
 // Ф-я скрытия формы редактирования изображения:
-function closeEditForm(){
+export function closeEditForm(){
   editFormImg.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
   imgUploadPreview.querySelector('img').removeAttribute('style');
   imgUploadPreview.querySelector('img').removeAttribute('class');
   sliderEffectLevel.noUiSlider.set(100);
+  buttonSubmit.disabled = false;
   imgUploadPreview.querySelector('img').value = '';
 }
 
@@ -94,7 +104,7 @@ function onEditCloseClick(){
   closeEditFormImg.removeEventListener('click', onEditCloseClick);
 }
 
-closeEditFormImg.addEventListener('click', onEditCloseClick);
+// closeEditFormImg.addEventListener('click', onEditCloseClick);
 
 // Ф-я открытия формы редактирования изображения:
 fieldUpload.addEventListener('change', ()=>{
