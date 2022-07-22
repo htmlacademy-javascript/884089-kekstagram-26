@@ -7,6 +7,10 @@ const fieldHashtag = form.querySelector('.text__hashtags');
 const fieldDescription = form.querySelector('.text__description');
 const sliderEffectLevel = document.querySelector('.effect-level__slider');
 const buttonSubmit = document.querySelector('.img-upload__submit');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successMessageWindow = successTemplate.cloneNode(true);
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorMessageWindow = errorTemplate.cloneNode(true);
 
 const pristine = new Pristine(form,{
   classTo:'img-upload__field-wrapper',
@@ -25,9 +29,18 @@ export const setUserFormSubmit = (onSuccess)=>{
           method: 'POST',
           body: formData,
         },
-      ).then(()=>{onSuccess();});
-      buttonSubmit.disabled = true;
-    // form.submit();
+      )
+        .then( (response)=>{
+          if(response.ok){
+            onSuccess();
+            buttonSubmit.disabled = true;
+            modalSuccessMessageWindow();
+            keydownSuccessMessageWindow();
+          }
+        })
+        .catch(()=>{
+          modalErrorMessageWindow();
+        });
     }
   });
 };
@@ -98,13 +111,53 @@ export function closeEditForm(){
   buttonSubmit.disabled = false;
   imgUploadPreview.querySelector('img').value = '';
 }
+function closeModalWindow(){
+  if(document.querySelector('.success')){
+    document.querySelector('.success').remove();
+  }
+  document.querySelector('.error').remove();
+}
+// Ф-я закрытия модального окна с сообщением об успешной отправке
+function modalSuccessMessageWindow(){
+  document.body.append(successMessageWindow);
+  const buttonClose = successMessageWindow.querySelector('.success__button');
+  window.addEventListener('click',(evt)=>{
+    const target = evt.target;
+    if (!target.closest('successMessageWindow') && !target.closest('buttonClose')) {
+      closeModalWindow();
+    }
+  });
+  buttonClose.removeEventListener('click', closeModalWindow);
+}
+
+function modalErrorMessageWindow(){
+  errorMessageWindow.style.zIndex= '2';
+  document.body.append(errorMessageWindow);
+
+  const buttonClose = errorMessageWindow.querySelector('.error__button');
+  window.addEventListener('click',(evt)=>{
+    const target = evt.target;
+    if (!target.closest('errorMessageWindow') && !target.closest('buttonClose')) {
+      closeModalWindow();
+    }
+  });
+  buttonClose.removeEventListener('click', closeModalWindow);
+}
+
+function keydownSuccessMessageWindow(){
+  document.addEventListener('keydown', (evt)=>{
+    if(evt.keyCode === 27){
+      closeModalWindow();
+    }
+  });
+}
 
 function onEditCloseClick(){
   closeEditForm();
   closeEditFormImg.removeEventListener('click', onEditCloseClick);
 }
 
-// closeEditFormImg.addEventListener('click', onEditCloseClick);
+closeEditFormImg.addEventListener('click', onEditCloseClick);
 
 // Ф-я открытия формы редактирования изображения:
 fieldUpload.addEventListener('change', ()=>{
