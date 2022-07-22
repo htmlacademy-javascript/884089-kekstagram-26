@@ -79,7 +79,7 @@ function onChangeFilter(evt){
 effectList.addEventListener('change', onChangeFilter);
 
 // Ф-я маштабирования изображения:
-function onChangeScale(evt){
+export function onChangeScale(evt){
 
   const target = evt.target;
   if(target.classList.contains('scale__control--smaller') && counterValue !== MAX_STEP){

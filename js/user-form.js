@@ -2,7 +2,7 @@ const form = document.querySelector('.img-upload__form');
 const editFormImg = form.querySelector('.img-upload__overlay');
 const fieldUpload = form.querySelector('#upload-file');
 const closeEditFormImg = form.querySelector('#upload-cancel');
-const imgUploadPreview = form.querySelector('.img-upload__preview');
+const imgUploadPreview = form.querySelector('.img-upload__preview img');
 const fieldHashtag = form.querySelector('.text__hashtags');
 const fieldDescription = form.querySelector('.text__description');
 const sliderEffectLevel = document.querySelector('.effect-level__slider');
@@ -22,6 +22,7 @@ export const setUserFormSubmit = (onSuccess)=>{
   form.addEventListener('submit', (evt)=>{
     evt.preventDefault();
     if(pristine.validate()){
+      buttonSubmit.disabled = true;
       const formData = new FormData(evt.target);
       fetch(
         'https://26.javascript.pages.academy/kekstagram',
@@ -33,7 +34,6 @@ export const setUserFormSubmit = (onSuccess)=>{
         .then( (response)=>{
           if(response.ok){
             onSuccess();
-            buttonSubmit.disabled = true;
             modalSuccessMessageWindow();
             keydownSuccessMessageWindow();
           }
@@ -103,20 +103,21 @@ pristine.addValidator(
 
 // Ф-я скрытия формы редактирования изображения:
 export function closeEditForm(){
-  editFormImg.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
-  imgUploadPreview.querySelector('img').removeAttribute('style');
-  imgUploadPreview.querySelector('img').removeAttribute('class');
+  imgUploadPreview.removeAttribute('class');
   sliderEffectLevel.noUiSlider.set(100);
   buttonSubmit.disabled = false;
-  imgUploadPreview.querySelector('img').value = '';
+  editFormImg.classList.add('hidden');
+  imgUploadPreview.removeAttribute('style');
 }
+
 function closeModalWindow(){
   if(document.querySelector('.success')){
     document.querySelector('.success').remove();
   }
   document.querySelector('.error').remove();
 }
+
 // Ф-я закрытия модального окна с сообщением об успешной отправке
 function modalSuccessMessageWindow(){
   document.body.append(successMessageWindow);
@@ -157,14 +158,13 @@ function onEditCloseClick(){
   closeEditFormImg.removeEventListener('click', onEditCloseClick);
 }
 
-closeEditFormImg.addEventListener('click', onEditCloseClick);
-
 // Ф-я открытия формы редактирования изображения:
 fieldUpload.addEventListener('change', ()=>{
   editFormImg.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
   closeEditFormImg.addEventListener('click', onEditCloseClick);
   document.addEventListener('keydown', onEditFormImgKeydown);
+  imgUploadPreview.style.transform = 'scale(1)';
 });
 
 function onEditFormImgKeydown(evt) {
