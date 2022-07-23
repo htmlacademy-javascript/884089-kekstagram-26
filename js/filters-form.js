@@ -4,14 +4,14 @@ const imgFiltersForm = document.querySelector('.img-filters__form');
 const imgFiltersButtons = imgFiltersForm.querySelectorAll('.img-filters__button');
 let arrayPreview = [];
 const compareCommentsLength = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
-// console.log(arrayPreview.sort());
-// const debounce = (callback, timeoutDelay = 500) => {
-//   let timeoutId;
-//   return (...rest) => {
-//     clearTimeout(timeoutId);
-//     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
-//   };
-// };
+
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
 
 const getRandomTen = (data) => {
   const newArr = new Set();
@@ -23,7 +23,6 @@ const getRandomTen = (data) => {
 
 export function saveArrayPreview(takeData){
   arrayPreview = takeData;
-  console.log(arrayPreview);
 }
 
 // Ф-я смены состояния фильтра:
@@ -47,26 +46,13 @@ export function changeFilterStatus(filterTarget){
     document.querySelectorAll('.picture').forEach((elem)=>{
       elem.remove();
     });
-    // for(let i = 0; i < arrayPreview.length; i++){
-    //   if(arrayPreview[0].comments.length < arrayPreview[i].comments.length)
-    //   {arrayPreview[0].comments.length = arrayPreview[i].comments.length;}
-    // }
-    // return arrayPreview.slice().sort(compareCommentsLength);
     renderPictures(arrayPreview.slice().sort(compareCommentsLength));
   }
   filterTarget.classList.add('img-filters__button--active');
 }
-// Функция взята из интернета и доработана
-// Источник - https://www.freecodecamp.org/news/javascript-debounce-example
 
-
-imgFiltersForm.addEventListener('click',(evt)=>{
+imgFiltersForm.addEventListener('click',debounce((evt)=>{
   const filterTarget = evt.target;
   changeFilterStatus(filterTarget);
-  // debounce (changeFilterStatus(filterTarget));
-});
-// debounce(changeFilterStatus(filterTarget));
-// Функция взята из интернета и доработана
-// Источник - https://www.freecodecamp.org/news/javascript-debounce-example
-
+}));
 

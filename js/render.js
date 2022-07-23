@@ -2,7 +2,6 @@
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
-// const bigPictureCommentCount = bigPicture.querySelector('.social__comment-count');
 const bigPictureClose = document.querySelector('.big-picture__cancel');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -13,10 +12,6 @@ const bigPictureCommentsLoader = bigPicture.querySelector('.comments-loader');
 const imgFilters = document.querySelector('.img-filters');
 const COMMENTS_PER_PAGE = 5;
 let counterShowedComments = COMMENTS_PER_PAGE;
-
-// export const xyi = ()=>{
-//   imgFilters.classList.remove('img-filters--inactive');
-// };
 
 // Комментарии к изображению:
 const bigPictureCommentsList = bigPicture.querySelector('.social__comments');
@@ -103,17 +98,6 @@ function showBigPicture(data) {
   bigPictureClose.addEventListener('click', onCloseClick);
   bigPictureCommentsLoader.addEventListener('click',onCommentsLoader);
 }
-// ОНО не работает!!!
-// // Ф-я открытия большого изображения по клику на соотвествующее превью:
-// function onPicturesClick(evt){
-//   const currentPicture = evt.target.parentElement;
-//   if(currentPicture.classList.contains('picture')){
-//     const pictureData = mocksArr.find((el)=>+currentPicture.id === +el.id);
-//     showBigPicture(currentPicture);
-//   }
-// }
-
-// pictures.addEventListener('click', onPicturesClick);
 
 // Ф-я на закрытие большого фото:
 function hiddenBigPicture(){
