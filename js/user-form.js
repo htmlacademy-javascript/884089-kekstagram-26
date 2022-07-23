@@ -108,19 +108,27 @@ function closeModalWindow(){
     document.querySelector('.error').remove();
   }
 }
+function onSuccessWindowClick(evt){
+  const target = evt.target;
+  if (!target.closest('errorMessageWindow') && !target.closest('buttonClose')) {
+    closeModalWindow();
+  }
+}
 
 // Ф-я закрытия модального окна с сообщением об успешной отправке:
 function modalSuccessMessageWindow(){
   successMessageWindow.style.zIndex= '2';
   document.body.append(successMessageWindow);
   const buttonClose = successMessageWindow.querySelector('.success__button');
-  window.addEventListener('click',(evt)=>{
-    const target = evt.target;
-    if (!target.closest('successMessageWindow') && !target.closest('buttonClose')) {
-      closeModalWindow();
-    }
-  });
+  window.addEventListener('click',onSuccessWindowClick);
   buttonClose.removeEventListener('click', closeModalWindow);
+}
+
+function onErrorWindowClick(evt){
+  const target = evt.target;
+  if (!target.closest('errorMessageWindow') && !target.closest('buttonClose')) {
+    closeModalWindow();
+  }
 }
 // Ф-я закрытия модального окна с сообщением об ошибке при отправке:
 function modalErrorMessageWindow(){
@@ -128,12 +136,7 @@ function modalErrorMessageWindow(){
   document.body.append(errorMessageWindow);
 
   const buttonClose = errorMessageWindow.querySelector('.error__button');
-  window.addEventListener('click',(evt)=>{
-    const target = evt.target;
-    if (!target.closest('errorMessageWindow') && !target.closest('buttonClose')) {
-      closeModalWindow();
-    }
-  });
+  window.addEventListener('click',onErrorWindowClick);
   buttonClose.removeEventListener('click', closeModalWindow);
 }
 

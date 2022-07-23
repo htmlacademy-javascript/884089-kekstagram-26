@@ -1,5 +1,4 @@
 import {saveArrayPreview} from './filters-form.js';
-import { closeEditForm } from './user-form.js';
 import { unblockButton } from './user-form.js';
 const errorLoadTemplate = document.querySelector('#js-error--load').content.querySelector('.error');
 const errorLoad = errorLoadTemplate.cloneNode(true);
