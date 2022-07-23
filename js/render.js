@@ -14,6 +14,10 @@ const imgFilters = document.querySelector('.img-filters');
 const COMMENTS_PER_PAGE = 5;
 let counterShowedComments = COMMENTS_PER_PAGE;
 
+// export const xyi = ()=>{
+//   imgFilters.classList.remove('img-filters--inactive');
+// };
+
 // Комментарии к изображению:
 const bigPictureCommentsList = bigPicture.querySelector('.social__comments');
 
