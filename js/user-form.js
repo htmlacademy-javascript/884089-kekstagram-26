@@ -1,11 +1,10 @@
+import { resetScale } from './controls.js';
 const form = document.querySelector('.img-upload__form');
 const editFormImg = form.querySelector('.img-upload__overlay');
 const fieldUpload = form.querySelector('#upload-file');
 const closeEditFormImg = form.querySelector('#upload-cancel');
-const imgUploadPreview = form.querySelector('.img-upload__preview img');
 const fieldHashtag = form.querySelector('.text__hashtags');
 const fieldDescription = form.querySelector('.text__description');
-const sliderEffectLevel = document.querySelector('.effect-level__slider');
 const buttonSubmit = document.querySelector('.img-upload__submit');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successMessageWindow = successTemplate.cloneNode(true);
@@ -104,11 +103,9 @@ pristine.addValidator(
 // Ф-я скрытия формы редактирования изображения:
 export function closeEditForm(){
   document.querySelector('body').classList.remove('modal-open');
-  imgUploadPreview.removeAttribute('class');
-  sliderEffectLevel.noUiSlider.set(100);
   buttonSubmit.disabled = false;
   editFormImg.classList.add('hidden');
-  imgUploadPreview.removeAttribute('style');
+  resetScale();
 }
 
 function closeModalWindow(){
@@ -118,7 +115,7 @@ function closeModalWindow(){
   document.querySelector('.error').remove();
 }
 
-// Ф-я закрытия модального окна с сообщением об успешной отправке
+// Ф-я закрытия модального окна с сообщением об успешной отправке:
 function modalSuccessMessageWindow(){
   document.body.append(successMessageWindow);
   const buttonClose = successMessageWindow.querySelector('.success__button');
@@ -130,7 +127,7 @@ function modalSuccessMessageWindow(){
   });
   buttonClose.removeEventListener('click', closeModalWindow);
 }
-
+// Ф-я закрытия модального окна с сообщением об ошибке при отправке:
 function modalErrorMessageWindow(){
   errorMessageWindow.style.zIndex= '2';
   document.body.append(errorMessageWindow);
@@ -164,7 +161,6 @@ fieldUpload.addEventListener('change', ()=>{
   document.querySelector('body').classList.add('modal-open');
   closeEditFormImg.addEventListener('click', onEditCloseClick);
   document.addEventListener('keydown', onEditFormImgKeydown);
-  imgUploadPreview.style.transform = 'scale(1)';
 });
 
 function onEditFormImgKeydown(evt) {

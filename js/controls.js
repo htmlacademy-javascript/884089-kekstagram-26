@@ -79,8 +79,7 @@ function onChangeFilter(evt){
 effectList.addEventListener('change', onChangeFilter);
 
 // Ф-я маштабирования изображения:
-export function onChangeScale(evt){
-
+function onChangeScale(evt){
   const target = evt.target;
   if(target.classList.contains('scale__control--smaller') && counterValue !== MAX_STEP){
     inputScale.value = `${counterValue - MAX_STEP  }%`;
@@ -95,3 +94,15 @@ export function onChangeScale(evt){
 }
 
 groupScales.addEventListener('click', onChangeScale);
+
+// Ф-я сброса параметров формы при закрытие окна формы:
+function resetScale(){
+  sliderEffectLevel.noUiSlider.set(100);
+  imgUploadPreview.removeAttribute('class');
+  imgUploadPreview.removeAttribute('style');
+  counterValue = 100;
+  inputScale.value = `${counterValue}%`;
+  imgUploadPreview.style.transform = `scale(${counterValue / 100})`;
+}
+export {resetScale};
+
