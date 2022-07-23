@@ -1,10 +1,7 @@
-// import {mocks} from './mock-data.js';
-
 // Константы найденых элеметов разметки index.html:
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
-// const bigPictureCommentCount = bigPicture.querySelector('.social__comment-count');
 const bigPictureClose = document.querySelector('.big-picture__cancel');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -12,6 +9,7 @@ const bigPictureDescription = bigPicture.querySelector('.social__caption');
 const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
 const bigPictureCurrentCommentsCount = bigPicture.querySelector('.js-comments-current-count');
 const bigPictureCommentsLoader = bigPicture.querySelector('.comments-loader');
+const imgFilters = document.querySelector('.img-filters');
 const COMMENTS_PER_PAGE = 5;
 let counterShowedComments = COMMENTS_PER_PAGE;
 
@@ -53,6 +51,7 @@ export function renderPictures(mocksArr){
     };
     pictureData.addEventListener('click', onPicturesClick);
     pictures.append(pictureData);
+    imgFilters.classList.remove('img-filters--inactive');
   }
   return pictures;
 }
@@ -99,17 +98,6 @@ function showBigPicture(data) {
   bigPictureClose.addEventListener('click', onCloseClick);
   bigPictureCommentsLoader.addEventListener('click',onCommentsLoader);
 }
-// ОНО не работает!!!
-// // Ф-я открытия большого изображения по клику на соотвествующее превью:
-// function onPicturesClick(evt){
-//   const currentPicture = evt.target.parentElement;
-//   if(currentPicture.classList.contains('picture')){
-//     const pictureData = mocksArr.find((el)=>+currentPicture.id === +el.id);
-//     showBigPicture(currentPicture);
-//   }
-// }
-
-// pictures.addEventListener('click', onPicturesClick);
 
 // Ф-я на закрытие большого фото:
 function hiddenBigPicture(){
@@ -129,5 +117,3 @@ function onPicturesKeydown(evt) {
   }
 }
 document.body.addEventListener('keydown', onPicturesKeydown);
-
-
