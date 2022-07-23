@@ -1,5 +1,3 @@
-// import {mocks} from './mock-data.js';
-
 // Константы найденых элеметов разметки index.html:
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
@@ -12,6 +10,7 @@ const bigPictureDescription = bigPicture.querySelector('.social__caption');
 const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
 const bigPictureCurrentCommentsCount = bigPicture.querySelector('.js-comments-current-count');
 const bigPictureCommentsLoader = bigPicture.querySelector('.comments-loader');
+const imgFilters = document.querySelector('.img-filters');
 const COMMENTS_PER_PAGE = 5;
 let counterShowedComments = COMMENTS_PER_PAGE;
 
@@ -53,6 +52,7 @@ export function renderPictures(mocksArr){
     };
     pictureData.addEventListener('click', onPicturesClick);
     pictures.append(pictureData);
+    imgFilters.classList.remove('img-filters--inactive');
   }
   return pictures;
 }
@@ -129,5 +129,3 @@ function onPicturesKeydown(evt) {
   }
 }
 document.body.addEventListener('keydown', onPicturesKeydown);
-
-
