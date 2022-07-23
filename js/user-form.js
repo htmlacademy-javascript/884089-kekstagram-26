@@ -1,11 +1,15 @@
+import { resetScale } from './controls.js';
 const form = document.querySelector('.img-upload__form');
 const editFormImg = form.querySelector('.img-upload__overlay');
 const fieldUpload = form.querySelector('#upload-file');
 const closeEditFormImg = form.querySelector('#upload-cancel');
-const imgUploadPreview = form.querySelector('.img-upload__preview');
 const fieldHashtag = form.querySelector('.text__hashtags');
 const fieldDescription = form.querySelector('.text__description');
-const sliderEffectLevel = document.querySelector('.effect-level__slider');
+const buttonSubmit = document.querySelector('.img-upload__submit');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successMessageWindow = successTemplate.cloneNode(true);
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorMessageWindow = errorTemplate.cloneNode(true);
 
 const pristine = new Pristine(form,{
   classTo:'img-upload__field-wrapper',
@@ -13,15 +17,32 @@ const pristine = new Pristine(form,{
   errorTextClass:'text__error'
 });
 
-const onFormSubmit = (evt)=>{
-  evt.preventDefault();
-  if(pristine.validate()){
-    form.submit();
-  }
+export const setUserFormSubmit = (onSuccess)=>{
+  form.addEventListener('submit', (evt)=>{
+    evt.preventDefault();
+    if(pristine.validate()){
+      buttonSubmit.disabled = true;
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://26.javascript.pages.academy/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+        .then( (response)=>{
+          if(response.ok){
+            onSuccess();
+            modalSuccessMessageWindow();
+            keydownSuccessMessageWindow();
+          }
+        })
+        .catch(()=>{
+          modalErrorMessageWindow();
+        });
+    }
+  });
 };
-
-form.addEventListener('submit', onFormSubmit);
-
 
 const textLengthComments = (value) => {
   if( value.length <= 140 || !value.length){
@@ -80,21 +101,59 @@ pristine.addValidator(
 );
 
 // Ф-я скрытия формы редактирования изображения:
-function closeEditForm(){
-  editFormImg.classList.add('hidden');
+export function closeEditForm(){
   document.querySelector('body').classList.remove('modal-open');
-  imgUploadPreview.querySelector('img').removeAttribute('style');
-  imgUploadPreview.querySelector('img').removeAttribute('class');
-  sliderEffectLevel.noUiSlider.set(100);
-  imgUploadPreview.querySelector('img').value = '';
+  buttonSubmit.disabled = false;
+  editFormImg.classList.add('hidden');
+  resetScale();
+}
+
+function closeModalWindow(){
+  if(document.querySelector('.success')){
+    document.querySelector('.success').remove();
+  }
+  document.querySelector('.error').remove();
+}
+
+// Ф-я закрытия модального окна с сообщением об успешной отправке:
+function modalSuccessMessageWindow(){
+  document.body.append(successMessageWindow);
+  const buttonClose = successMessageWindow.querySelector('.success__button');
+  window.addEventListener('click',(evt)=>{
+    const target = evt.target;
+    if (!target.closest('successMessageWindow') && !target.closest('buttonClose')) {
+      closeModalWindow();
+    }
+  });
+  buttonClose.removeEventListener('click', closeModalWindow);
+}
+// Ф-я закрытия модального окна с сообщением об ошибке при отправке:
+function modalErrorMessageWindow(){
+  errorMessageWindow.style.zIndex= '2';
+  document.body.append(errorMessageWindow);
+
+  const buttonClose = errorMessageWindow.querySelector('.error__button');
+  window.addEventListener('click',(evt)=>{
+    const target = evt.target;
+    if (!target.closest('errorMessageWindow') && !target.closest('buttonClose')) {
+      closeModalWindow();
+    }
+  });
+  buttonClose.removeEventListener('click', closeModalWindow);
+}
+
+function keydownSuccessMessageWindow(){
+  document.addEventListener('keydown', (evt)=>{
+    if(evt.keyCode === 27){
+      closeModalWindow();
+    }
+  });
 }
 
 function onEditCloseClick(){
   closeEditForm();
   closeEditFormImg.removeEventListener('click', onEditCloseClick);
 }
-
-closeEditFormImg.addEventListener('click', onEditCloseClick);
 
 // Ф-я открытия формы редактирования изображения:
 fieldUpload.addEventListener('change', ()=>{
