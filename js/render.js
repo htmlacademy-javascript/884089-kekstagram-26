@@ -10,8 +10,10 @@ const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
 const bigPictureCurrentCommentsCount = bigPicture.querySelector('.js-comments-current-count');
 const bigPictureCommentsLoader = bigPicture.querySelector('.comments-loader');
 const imgFilters = document.querySelector('.img-filters');
+const KEY_ESC = 27;
 const COMMENTS_PER_PAGE = 5;
 let counterShowedComments = COMMENTS_PER_PAGE;
+
 
 // Комментарии к изображению:
 const bigPictureCommentsList = bigPicture.querySelector('.social__comments');
@@ -82,7 +84,7 @@ function showBigPicture(data) {
     rederComment(data.comments,i);
   }
   // Ф-я отрисовки оставшихся комментариев по 5 и условие скрытия кнопки догрузки
-  function onCommentsLoader(){
+  const onCommentsLoader = () =>{
     const tempComments = data.comments.slice(counterShowedComments, counterShowedComments + COMMENTS_PER_PAGE);
     counterShowedComments += COMMENTS_PER_PAGE;
     if(counterShowedComments >= data.comments.length){
@@ -93,10 +95,19 @@ function showBigPicture(data) {
     for(let i = 0; i < tempComments.length; i++){
       rederComment(data.comments,i);
     }
-  }
+  };
+  const onClickLoader = ()=> {
+    onCommentsLoader();
+  };
+  const onRemoveComments = ()=>{
+    bigPictureCommentsLoader.removeEventListener('click', onCommentsLoader);
+    bigPictureClose.removeEventListener('click',onRemoveComments);
+    bigPictureCommentsLoader.removeEventListener('click',onClickLoader);
+  };
 
+  bigPictureClose.addEventListener('click',onRemoveComments);
   bigPictureClose.addEventListener('click', onCloseClick);
-  bigPictureCommentsLoader.addEventListener('click',onCommentsLoader);
+  bigPictureCommentsLoader.addEventListener('click',onClickLoader);
 }
 
 // Ф-я на закрытие большого фото:
@@ -104,6 +115,7 @@ function hiddenBigPicture(){
   document.querySelector('.big-picture').classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
   bigPictureCommentsLoader.classList.remove('hidden');
+  counterShowedComments = COMMENTS_PER_PAGE;
 }
 
 function onCloseClick(){
@@ -112,7 +124,7 @@ function onCloseClick(){
 }
 
 function onPicturesKeydown(evt) {
-  if(evt.keyCode === 27){
+  if(evt.keyCode === KEY_ESC){
     hiddenBigPicture();
   }
 }

@@ -13,6 +13,7 @@ const errorTemplate = document.querySelector('#error').content.querySelector('.e
 const imgUploadInput = document.querySelector('.img-upload__input');
 const errorMessageWindow = errorTemplate.cloneNode(true);
 const KEY_ESC = 27;
+const MAX_COMMENTS_LENGTH = 140;
 
 const pristine = new Pristine(form,{
   classTo:'img-upload__field-wrapper',
@@ -33,7 +34,7 @@ export const setUserFormSubmit = (onSuccess)=>{
 };
 
 const textLengthComments = (value) => {
-  if( value.length <= 140 || !value.length){
+  if( value.length <= MAX_COMMENTS_LENGTH || !value.length){
     return true;
   }
 };

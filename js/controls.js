@@ -98,11 +98,12 @@ groupScales.addEventListener('click', onChangeScale);
 // Ф-я сброса параметров формы при закрытие окна формы:
 function resetScale(){
   sliderEffectLevel.noUiSlider.set(100);
-  imgUploadPreview.removeAttribute('class');
   imgUploadPreview.removeAttribute('style');
   counterValue = 100;
   inputScale.value = `${counterValue}%`;
   imgUploadPreview.style.transform = `scale(${counterValue / 100})`;
+  imgUploadPreview.removeAttribute('class');
+  document.getElementById('effect-none').checked = true;
 }
 export {resetScale};
 
