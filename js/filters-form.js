@@ -2,6 +2,7 @@ import {renderPictures} from './render.js';
 import {getRandomIntInclusive} from './util.js';
 const imgFiltersForm = document.querySelector('.img-filters__form');
 const imgFiltersButtons = imgFiltersForm.querySelectorAll('.img-filters__button');
+const COUNT_RANDOM_FOTO = 10;
 let arrayPreview = [];
 const compareCommentsLength = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
@@ -15,7 +16,7 @@ function debounce (callback, timeoutDelay = 500) {
 
 const getRandomTen = (data) => {
   const newArr = new Set();
-  for (let i = 0; newArr.size < 10; i++) {
+  for (let i = 0; newArr.size < COUNT_RANDOM_FOTO; i++) {
     newArr.add(data[getRandomIntInclusive(0, data.length - 1)]);
   }
   return Array.from(newArr);
