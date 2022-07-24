@@ -50,7 +50,7 @@ const isNoRepeats = (value)=>{
   if(value === '') {
     return true;
   }
-  value.trim().toLowerCase().split(' ').every((element, index, arr) => arr.indexOf(element) === index);
+  return value.trim().toLowerCase().split(' ').every((element, index, arr) => arr.indexOf(element) === index);
 };
 
 pristine.addValidator(

@@ -1,7 +1,7 @@
 const fileChooser = document.querySelector('.img-upload__form [type=file]');
 const preview = document.querySelector('.img-upload__preview img');
 const TYPE_FILE = ['png','jpg','jpeg'];
-function changeFoto(){
+function onChangeFoto(){
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
 
@@ -11,7 +11,5 @@ function changeFoto(){
     preview.src = URL.createObjectURL(file);
   }
 }
-fileChooser.addEventListener('change',()=>{
-  changeFoto();
-});
+fileChooser.addEventListener('change', onChangeFoto);
 
