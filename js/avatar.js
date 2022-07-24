@@ -11,5 +11,5 @@ function onChangeFoto(){
     preview.src = URL.createObjectURL(file);
   }
 }
-fileChooser.addEventListener('change', changeFoto);
+fileChooser.addEventListener('change', onChangeFoto);
 
